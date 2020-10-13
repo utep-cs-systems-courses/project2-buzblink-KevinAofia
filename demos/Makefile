@@ -4,9 +4,15 @@ all:
 	(cd button_demo && make)
 	(cd buzzer_demo && make)
 
+	(cd blink_fast && make)
+
+
+
 clean:
 	(cd timerLib && make clean)
 	(cd blink_demo && make clean)
 	(cd button_demo && make clean)
 	(cd buzzer_demo && make clean)
+
+	(cd blink_demo && make clean)
 
