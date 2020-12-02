@@ -2,6 +2,8 @@
 #include "switches.h"
 #include "led.h"
 
+char switch_state;
+
 static char 
 switch_update_interrupt_sense()
 {
@@ -29,7 +31,8 @@ switch_interrupt_handler()
   if((p2val & SW1) == 0) {
     switch_state = 1;
   }
-  else if((p2val & SW2) == 0) {
+  //if      pressing2           not pressing1        not pressing3         not pressing4
+  else if(((p2val & SW2) != 0)&&((p2val & SW1) != 0)&&((p2val & SW3) == 0)&&((p2val & SW4) == 0)){
     switch_state = 2;
   }
   else if((p2val & SW3) == 0) {

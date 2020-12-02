@@ -11,56 +11,32 @@ char blinkbuzz_state = 0;
 char siren_state = 0;
 int frequency = 700;
 
-int dim_state = 0;
-int dim_state2 = 0;
+char dim_state = 0;
+char start = 0;
 
-void turn_on_red() {
-  red_on = 1;
-  green_on = 0; //turns green off
-  led_changed = 1;
-  led_update();
-}
-void turn_on_green() {
-  green_on = 1;
-  red_on = 0; //turns red off
-  led_changed = 1;
-  led_update();
-}
-void turn_on_all() {
-  red_on = 1;
-  green_on = 1;
-  led_changed = 1;
-  led_update();
-}
 void blinkbuzz() {
-  //static char blinkbuzz_state = 0;
   switch(blinkbuzz_state)
     {
     case 0:
-      turn_on_green();
-      buzzer_set_period(7632);
+      G_on();
+      buzzer_set_period(4500);
       blinkbuzz_state = 1;
       break;
     case 1:
-      turn_on_all();
-      buzzer_set_period(5714);
-      blinkbuzz_state = 2;
-      break;
-    case 2:
-      turn_on_red();
-      buzzer_set_period(4048);
+      G_off();
+      buzzer_set_period(2000);
       blinkbuzz_state = 0;
       break;
     }
 }
 void siren() { 
-  //static char siren_state = 0;
-  //static int frequency = 700;
   switch(siren_state)
     {
     case 0:
       buzzer_set_period(frequency);
       frequency = frequency + 10;
+      R_on();
+      G_off();
       if(frequency == 1600) {
 	siren_state = 1;
       }
@@ -68,66 +44,178 @@ void siren() {
     case 1:
       buzzer_set_period(frequency);
       frequency = frequency - 10;
+      G_on();
+      R_off();
       if(frequency == 700) {
 	siren_state = 0;
       }
       break;
     }
 }
-void dim() {
-  static int dim_counter = 0;
-  if(dim_counter < 62) {
-    dim25();
-    dim_counter += 1;
-  }
-  else if(dim_counter < 125) {
-    dim50();
-    dim_counter += 1;
-  }
-  else {
-    if(dim_counter == 250){
-      dim_counter = 0;
-    }
-    else {
-      dim75();
-      dim_counter += 1;
-    }
-  }
-}
-void dim25() {
-  switch(dim_state2)
+void state_advance(){
+  switch(dim_state)
     {
-    case 0: red_on = 1; break;
-    case 1:
-    case 2:
-    case 3: red_on = 0; break;
-    default: dim_state2 = 0; break;
+    case 0:off();start=0;break;
+    case 1:d10();start++;break;
+    case 2:d20();start++;break;
+    case 3:d30();start++;break;
+    case 4:d40();start++;break;
+    case 5:d50();start++;break;
+    case 6:d60();start++;break;
+    case 7:d70();start++;break;
+    case 8:d80();start++;break;
+    case 9:d90();start++;break;
+    case 10:on();start++;break;
+    default:dim_state = 0;
     }
-  led_changed = 1;
-  led_update();
 }
-void dim50() {
-  switch(dim_state2)
-    {
-    case 0:
-    case 1: red_on = 1; break;
-    case 2:
-    case 3: red_on = 0; break;
-    default: dim_state2 = 0;
-    }
-  led_changed = 1;
-  led_update();
+void off(){
+  R_off();
 }
-  
-void dim75() {
-  switch(dim_state2)
+void d10() {
+  switch(start)
     {
-    case 0: red_on = 0; break;
-    case 1: 
-    case 2: 
-    case 3: red_on = 1; break;
-    default: dim_state2 = 0;
+    case 0:R_on();break;
+    case 1:R_off();break;
+    case 2:R_off();break;
+    case 3:R_off();break;
+    case 4:R_off();break;
+    case 5:R_off();break;
+    case 6:R_off();break;
+    case 7:R_off();break;
+    case 8:R_off();break;
+    case 9:R_off();break;
+    default:start=0;break;
     }
-  led_changed = 1;
-  led_update();
+}
+void d20() {
+  switch(start)
+    {
+    case 0:R_on();break;
+    case 1:R_on();break;
+    case 2:R_off();break;
+    case 3:R_off();break;
+    case 4:R_off();break;
+    case 5:R_off();break;
+    case 6:R_off();break;
+    case 7:R_off();break;
+    case 8:R_off();break;
+    case 9:R_off();break;
+    default:start=0;break;
+    }
+}
+void d30() {
+  switch(start)
+    {
+    case 0:R_on();break;
+    case 1:R_on();break;
+    case 2:R_on();break;
+    case 3:R_off();break;
+    case 4:R_off();break;
+    case 5:R_off();break;
+    case 6:R_off();break;
+    case 7:R_off();break;
+    case 8:R_off();break;
+    case 9:R_off();break;
+    default:start=0;break;
+    }
+}
+void d40() {
+  switch(start)
+    {
+    case 0:R_on();break;
+    case 1:R_on();break;
+    case 2:R_on();break;
+    case 3:R_on();break;
+    case 4:R_off();break;
+    case 5:R_off();break;
+    case 6:R_off();break;
+    case 7:R_off();break;
+    case 8:R_off();break;
+    case 9:R_off();break;
+    default:start=0;break;
+    }
+}
+void d50() {
+  switch(start)
+    {
+    case 0:R_on();break;
+    case 1:R_on();break;
+    case 2:R_on();break;
+    case 3:R_on();break;
+    case 4:R_on();break;
+    case 5:R_off();break;
+    case 6:R_off();break;
+    case 7:R_off();break;
+    case 8:R_off();break;
+    case 9:R_off();break;
+    default:start=0;break;
+    }
+}
+void d60() {
+  switch(start)
+    {
+    case 0:R_on();break;
+    case 1:R_on();break;
+    case 2:R_on();break;
+    case 3:R_on();break;
+    case 4:R_on();break;
+    case 5:R_on();break;
+    case 6:R_off();break;
+    case 7:R_off();break;
+    case 8:R_off();break;
+    case 9:R_off();break;
+    default:start=0;break;
+    }
+}
+void d70() {
+  switch(start)
+    {
+    case 0:R_on();break;
+    case 1:R_on();break;
+    case 2:R_on();break;
+    case 3:R_on();break;
+    case 4:R_on();break;
+    case 5:R_on();break;
+    case 6:R_on();break;
+    case 7:R_off();break;
+    case 8:R_off();break;
+    case 9:R_off();break;
+    default:start=0;break;
+    }
+}
+void d80() {
+  switch(start)
+    {
+    case 0:R_on();break;
+    case 1:R_on();break;
+    case 2:R_on();break;
+    case 3:R_on();break;
+    case 4:R_on();break;
+    case 5:R_on();break;
+    case 6:R_on();break;
+    case 7:R_on();break;
+    case 8:R_off();break;
+    case 9:R_off();break;
+    default:start=0;break;
+    }
+}
+void d90() {
+  switch(start)
+    {
+    case 0:R_on();break;
+    case 1:R_on();break;
+    case 2:R_on();break;
+    case 3:R_on();break;
+    case 4:R_on();break;
+    case 5:R_on();break;
+    case 6:R_on();break;
+    case 7:R_on();break;
+    case 8:R_on();break;
+    case 9:R_off();break;
+    default:start=0;break;
+    }
+}
+void on(){
+  R_on();
 }

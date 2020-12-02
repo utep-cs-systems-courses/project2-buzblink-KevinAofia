@@ -8,7 +8,7 @@
 
 int main(void) {
   configureClocks();		//setup master oscillator, CPU & peripheral clocks
-  led_init();                   //init our leds
+  led_init();                   //init our leds but does not turn any on
   buzzer_init();                //init our buzzer
   switch_init();                //init our switches
 

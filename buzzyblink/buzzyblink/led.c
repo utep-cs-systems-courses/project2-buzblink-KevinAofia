@@ -3,28 +3,57 @@
 
 unsigned char red_on = 0, green_on = 0;
 unsigned char led_changed = 0;
-//#define BIT1 0x01;
-//#define BIT6 0x40;
-
-//                        (0000 0001)                (0100 0000)
+//                     [0]   [1]                  [0]   [1]
 static char redVal[] = {0, LED_RED}, greenVal[] = {0, LED_GREEN};
-
-
+//redVal[0] = 0, redVal[1] = LED_RED,greenVal[0] = 0, greenvalVal[1] = LED_GREEN
 void led_init()
 {
-  P1DIR |= LEDS;   // bits attached to leds are output (0100 0001)
+  P1DIR |= LEDS;		
   led_changed = 1;
   led_update();
 }
-
 void led_update()
 {
   if (led_changed) {
+    //bitwise op | will give us the value of redVal or'd with greenVal, EXAMPLE BELOW: 1ST CASE
     char ledFlags = redVal[red_on] | greenVal[green_on];
-    
-    //((1111 1111)^(0100 0001))=(1011 1110) | with ledFlags which is updated by red_on/green_on
-    P1OUT &= (0xff^LEDS) | ledFlags;    //clear bit for off leds, by forcing those to 0
-    P1OUT |= ledFlags;		        // set bit for on leds, if any are true
-    led_changed = 0;
+    //(      0xff    ^    LEDS              )| ledFlags
+    //     1111 1111 ^ 0100 0001 = 1011 1110 | 0000 0000 = 1011 1110
+    //     P1OUT                &= 1011 1110
+    P1OUT &= (0xff^LEDS) | ledFlags; //you can see above how we cleared the led bits to off
+    P1OUT |= ledFlags;		     //and here we turn the according bits back to true/on
+    led_changed = 0;                 //we have changed the leds, so we can reset this val
   }
+}
+void R_on(){
+  red_on = 1;
+  led_changed = 1;
+  led_update();
+}
+void G_on(){
+  green_on = 1;
+  led_changed = 1;
+  led_update();
+}
+void R_off(){
+  red_on = 0;
+  led_changed = 1;
+  led_update();
+}
+void G_off(){
+  green_on = 0;
+  led_changed = 1;
+  led_update();
+}
+void RG_on(){
+  red_on = 1;
+  green_on =1;
+  led_changed = 1;
+  led_update();
+}
+void RG_off(){
+  red_on = 0;
+  green_on = 0;
+  led_changed = 1;
+  led_update();
 }
