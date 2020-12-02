@@ -2,47 +2,173 @@
 #include "stateMachines.h"
 #include "led.h"
 
-char toggle_red()		/* always toggle! */
-{
-  static char state = 0;
+char dim_state = 0; //extern
 
-  switch (state) {
-  case 0:
-    red_on = 1;
-    state = 1;
-    break;
-  case 1:
-    red_on = 0;
-    state = 0;
-    break;
-  }
-  return 1;			/* always changes an led */
+void state_advance(){
+  switch(dim_state)
+    {
+    case 0:off();start=0;break;
+    case 1:d10();start++;break;
+    case 2:d20();start++;break;
+    case 3:d30();start++;break;
+    case 4:d40();start++;break;
+    case 5:d50();start++;break;
+    case 6:d60();start++;break;
+    case 7:d70();start++;break;
+    case 8:d80();start++;break;
+    case 9:d90();start++;break;
+    case 10:on();start++;break;
+    default:dim_state = 0;
+    }
 }
-
-char toggle_green()	/* only toggle green if red is on!  */
-{
-  char changed = 0;
-  if (red_on) {
-    green_on ^= 1;
-    changed = 1;
-  }
-  return changed;
+char start = 0;
+void off(){
+  R_off();
 }
-
-
-void state_advance()		/* alternate between toggling red & green */
-{
-  char changed = 0;  
-
-  static enum {R=0, G=1} color = G;
-  switch (color) {
-  case R: changed = toggle_red(); color = R; break;
-  case G: changed = toggle_green(); color = R; break;
-  }
-
-  led_changed = changed;
-  led_update();
+void on(){
+  R_on();
 }
-
-
-
+void d10() {
+  switch(start)
+    {
+    case 0:R_on();break;
+    case 1:R_off();break;
+    case 2:R_off();break;
+    case 3:R_off();break;
+    case 4:R_off();break;
+    case 5:R_off();break;
+    case 6:R_off();break;
+    case 7:R_off();break;
+    case 8:R_off();break;
+    case 9:R_off();break;
+    default:start=0;break;
+    }
+}
+void d20() {
+  switch(start)
+    {
+    case 0:R_on();break;
+    case 1:R_on();break;
+    case 2:R_off();break;
+    case 3:R_off();break;
+    case 4:R_off();break;
+    case 5:R_off();break;
+    case 6:R_off();break;
+    case 7:R_off();break;
+    case 8:R_off();break;
+    case 9:R_off();break;
+    default:start=0;break;
+    }
+}
+void d30() {
+  switch(start)
+    {
+    case 0:R_on();break;
+    case 1:R_on();break;
+    case 2:R_on();break;
+    case 3:R_off();break;
+    case 4:R_off();break;
+    case 5:R_off();break;
+    case 6:R_off();break;
+    case 7:R_off();break;
+    case 8:R_off();break;
+    case 9:R_off();break;
+    default:start=0;break;
+    }
+}
+void d40() {
+  switch(start)
+    {
+    case 0:R_on();break;
+    case 1:R_on();break;
+    case 2:R_on();break;
+    case 3:R_on();break;
+    case 4:R_off();break;
+    case 5:R_off();break;
+    case 6:R_off();break;
+    case 7:R_off();break;
+    case 8:R_off();break;
+    case 9:R_off();break;
+    default:start=0;break;
+    }
+}
+void d50() {
+  switch(start)
+    {
+    case 0:R_on();break;
+    case 1:R_on();break;
+    case 2:R_on();break;
+    case 3:R_on();break;
+    case 4:R_on();break;
+    case 5:R_off();break;
+    case 6:R_off();break;
+    case 7:R_off();break;
+    case 8:R_off();break;
+    case 9:R_off();break;
+    default:start=0;break;
+    }
+}
+void d60() {
+  switch(start)
+    {
+    case 0:R_on();break;
+    case 1:R_on();break;
+    case 2:R_on();break;
+    case 3:R_on();break;
+    case 4:R_on();break;
+    case 5:R_on();break;
+    case 6:R_off();break;
+    case 7:R_off();break;
+    case 8:R_off();break;
+    case 9:R_off();break;
+    default:start=0;break;
+    }
+}
+void d70() {
+  switch(start)
+    {
+    case 0:R_on();break;
+    case 1:R_on();break;
+    case 2:R_on();break;
+    case 3:R_on();break;
+    case 4:R_on();break;
+    case 5:R_on();break;
+    case 6:R_on();break;
+    case 7:R_off();break;
+    case 8:R_off();break;
+    case 9:R_off();break;
+    default:start=0;break;
+    }
+}
+void d80() {
+  switch(start)
+    {
+    case 0:R_on();break;
+    case 1:R_on();break;
+    case 2:R_on();break;
+    case 3:R_on();break;
+    case 4:R_on();break;
+    case 5:R_on();break;
+    case 6:R_on();break;
+    case 7:R_on();break;
+    case 8:R_off();break;
+    case 9:R_off();break;
+    default:start=0;break;
+    }
+}
+void d90() {
+  switch(start)
+    {
+    case 0:R_on();break;
+    case 1:R_on();break;
+    case 2:R_on();break;
+    case 3:R_on();break;
+    case 4:R_on();break;
+    case 5:R_on();break;
+    case 6:R_on();break;
+    case 7:R_on();break;
+    case 8:R_on();break;
+    case 9:R_off();break;
+    default:start=0;break;
+    }
+}
