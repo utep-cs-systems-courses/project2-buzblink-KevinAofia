@@ -31,10 +31,11 @@ switch_interrupt_handler()
   if((p2val & SW1) == 0) {
     switch_state = 1;
   }
-  //if      pressing2           not pressing1        not pressing3         not pressing4
-  else if(((p2val & SW2) != 0)&&((p2val & SW1) != 0)&&((p2val & SW3) == 0)&&((p2val & SW4) == 0)){
+  /*
+  else if((p2val & SW2) == 0){
     switch_state = 2;
   }
+  */
   else if((p2val & SW3) == 0) {
     switch_state = 3;
   }

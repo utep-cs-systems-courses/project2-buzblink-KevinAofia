@@ -19,6 +19,11 @@ __interrupt_vec(WDT_VECTOR) WDT(){	//250 interrupts/sec
       }
       break;
     case 2:
+      if(count == 125){
+	blinkbuzz();
+	count = 0;
+      }
+      break;
     case 3:
       state_advance();
       if(count == 125){
